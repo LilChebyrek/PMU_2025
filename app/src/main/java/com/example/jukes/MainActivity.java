@@ -72,7 +72,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    public int getZodiacSignId(int day, int month){
+        switch(month){
+            case 0: return (day < 20) ? R.drawable.kozerog : R.drawable.vodoley;
+            case 1: return (day < 20) ? R.drawable.vodoley : R.drawable.fish;
+            case 2: return (day < 21) ? R.drawable.fish : R.drawable.oven;
+            case 3: return (day < 21) ? R.drawable.oven : R.drawable.telec;
+            case 4: return (day < 22) ? R.drawable.telec : R.drawable.bleznici;
+            case 5: return (day < 22) ? R.drawable.bleznici : R.drawable.rak;
+            case 6: return (day < 24) ? R.drawable.rak : R.drawable.lev;
+            case 7: return (day < 24) ? R.drawable.lev : R.drawable.deva;
+            case 8: return (day < 24) ? R.drawable.deva : R.drawable.vesi;
+            case 9: return (day < 24) ? R.drawable.vesi : R.drawable.scorpion;
+            case 10: return (day < 23) ? R.drawable.scorpion : R.drawable.strelec;
+            case 11: return (day < 22) ? R.drawable.strelec : R.drawable.kozerog;
+        }
+        return 0;
+    }
     @SuppressLint("SetTextI18n")
     public void savePlayerInfo(View view) {
         EditText editText = findViewById(R.id.editTextText);
@@ -83,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         CalendarView calendarView = findViewById(R.id.calendarView);
         ImageView imageView = findViewById(R.id.imageView);
 
-        if (editText.toString() == "" || !(radioButtonM.isChecked() || radioButtonF.isChecked())) {
+        if (editText.getText().toString().isEmpty() || !(radioButtonM.isChecked() || radioButtonF.isChecked())) {
             Toast toast = Toast.makeText(this, "Заполните все пункты!", Toast.LENGTH_LONG);
             toast.show();
 
@@ -93,26 +109,17 @@ public class MainActivity extends AppCompatActivity {
             calendar.setTimeInMillis(calendarView.getDate());
 
             int day = calendar.get(Calendar.DAY_OF_MONTH);
-            long a = calendarView.getDate();
             int month = calendar.get(Calendar.MONTH);
-            //ImageView z = new ImageView(this);
-            if (day > 10 && day < 25) {
-                imageView.setImageResource(R.drawable.kozerog);
 
-
-            }
-            else {
-                imageView.setImageResource(R.drawable.hzkakoyznak);
-            }
+            imageView.setImageResource(getZodiacSignId(day, month));
 
             SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             String dateString = date.format(new Date(calendarView.getDate()));
 
-            playerInfo = new PlayerInfo(editText.toString(), !radioButtonM.isChecked(), spinner.getSelectedItem().toString(), seekBar.getProgress(), dateString, imageView);
+            playerInfo = new PlayerInfo(editText.getText().toString(), !radioButtonM.isChecked(), spinner.getSelectedItem().toString(), seekBar.getProgress(), dateString, imageView);
 
-            TextView textView = findViewById(R.id.playerInfo);
-            textView.setText("Добавлен новый игрок " + editText.getText().toString() + " " +  (radioButtonM.isChecked() ? "мужского пола, " : "женского пола, ") + spinner.getSelectedItem().toString() + "а, " + dateString + " даты рождения");
+            Toast toast = Toast.makeText(this, "Добавлен новый игрок " + editText.getText().toString() + " " +  (radioButtonM.isChecked() ? "мужского пола, " : "женского пола, ") + spinner.getSelectedItem().toString() + "а, " + dateString, Toast.LENGTH_LONG);
+            toast.show();
         }
-
     }
 }
